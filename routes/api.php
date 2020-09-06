@@ -18,6 +18,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
  */
+Route::get('hail/{x?}',function($x){
+    if($x) echo '<h3>Hello World!</h3>';
+        else echo '<h3>Hello World! '.$x.'</h3>';
+ });
 Route::resource('/user','User\UserController',['except'=>['create', 'edit']]);
 Route::resource('buyer','Buyer\BuyerController',['only'=>['show','index']]);
 Route::resource('category','Category\CategoryController',['except'=>['create','edit']]);
