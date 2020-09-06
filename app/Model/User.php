@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Str;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -12,14 +13,15 @@ class User extends Authenticatable
     const USER_VERIFIED = true;
     const USER_NOT_VERIFIED = false;
 
-    const ISADMIN = true;
+    const ADMIN = true;
+    const REGULAR = false;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','verirified','verification_token','admin'
+        'name', 'email', 'password','verified','verification_token','admin'
 
     ];
 
@@ -44,10 +46,10 @@ class User extends Authenticatable
         return $this->verified = self::USER_VERIFIED;
     }
     function isAdmin(){
-        return $this->admin == self::ISADMIN;
+        return $this->admin == self::ADMIN;
     }
 
     static function generateToken(){
-        return str_random(40);
+        return Str::random(40);
     }
 }

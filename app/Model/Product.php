@@ -8,7 +8,7 @@ use phpDocumentor\Reflection\Types\This;
 class Product extends Model
 {
     const AVAILABLE = true;
-    const NOTAVAILABLE = false;
+    const UNAVAILABLE = false;
     protected $fillable = [
         'name',
         'brief',
