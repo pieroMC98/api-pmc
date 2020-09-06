@@ -9,14 +9,18 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use Notifiable;
+    const USER_VERIFIED = true;
+    const USER_NOT_VERIFIED = false;
 
+    const ISADMIN = true;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','verirified','verification_token','admin'
+
     ];
 
     /**
@@ -25,7 +29,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token','verification_token'
     ];
 
     /**
@@ -36,4 +40,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    function isVerified(){
+        return $this->verified = self::USER_VERIFIED;
+    }
+    function isAdmin(){
+        return $this->admin == self::ISADMIN;
+    }
+
+    static function generateToken(){
+        return str_random(40);
+    }
 }
