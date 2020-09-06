@@ -13,7 +13,12 @@ class Category extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('category',function(Blueprint $t){
+            $t->increments('id')->unsigned();
+            $t->string('name');
+            $t->string('brief',1000);
+            $t->timestamps(); 
+        });
     }
 
     /**
