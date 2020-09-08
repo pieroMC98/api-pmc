@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
+    protected $table = 'transaction';
     protected $fillable = [
         'quantify','buyer_id','product_id'
     ];

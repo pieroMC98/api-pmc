@@ -7,12 +7,14 @@ use phpDocumentor\Reflection\Types\This;
 
 class Product extends Model
 {
+    protected $table = 'product';
     const AVAILABLE = true;
     const UNAVAILABLE = false;
     protected $fillable = [
         'name',
         'brief',
         'status',
+        'quantify',
         'image',
         'seller_id'
     ];

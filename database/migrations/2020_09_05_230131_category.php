@@ -14,7 +14,7 @@ class Category extends Migration
     public function up()
     {
         Schema::create('category',function(Blueprint $t){
-            $t->increments('id')->unsigned();
+            $t->id();
             $t->string('name');
             $t->string('brief',1000);
             $t->timestamps(); 
@@ -28,6 +28,6 @@ class Category extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('category');
     }
 }
