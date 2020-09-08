@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    protected $table = 'user';
     use Notifiable;
     const USER_VERIFIED = true;
     const USER_NOT_VERIFIED = false;

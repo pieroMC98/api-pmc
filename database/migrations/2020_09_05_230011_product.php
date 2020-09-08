@@ -14,15 +14,16 @@ class Product extends Migration
     public function up()
     {
         Schema::create('product',function(Blueprint $table){
-            $table->increments('id');
+            $table->id();
             $table->string('name');
             $table->string('brief',1000);
-            $table->string('quantify')->unsigned();
+            $table->integer('quantify')->unsigned();
             $table->timestamps();
             $table->string('status')->default(App\Product::UNAVAILABLE);
-            $table->integer('seller_id')->unsigned();
+           // $table->integer('seller_id');
             $table->string('image');
-            $table->foreign('seller_id')->references('id')->on('user');
+           // $table->foreign('seller_id')->references('id')->on('user');
+            $table->foreignId('seller_id')->constrained('user');
         });
 
     }
@@ -35,5 +36,6 @@ class Product extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('product');
     }
 }
