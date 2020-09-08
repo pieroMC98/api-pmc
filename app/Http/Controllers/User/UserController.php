@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -14,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+      return response()->json( ['data'=>User::all()],200);
     }
 
     /**
@@ -24,7 +25,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        //no hace falta, ya esta creado
     }
 
     /**
@@ -35,7 +36,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'name' => 'required',
+            'email'=>['required','email', 'unique:user'],
+            'password'=>['required','min:6','confirmed']
+        ];
+
+        $this->validate($request,$rules);
+        $value = $request->all();
+        $value['password'] = bcrypt($request->password);
+        $value['verified'] = User::USER_NOT_VERIFIED;
+        $value['admin'] = User::REGULAR;
+        $value['verication_token'] = User::generateToken();
+        return response()->json(['data'=>User::create($value)],201);
     }
 
     /**
@@ -46,7 +59,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(['show'=>User::findOrFail($id)]);
     }
 
     /**
@@ -57,7 +70,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        // no hace falta
     }
 
     /**
@@ -69,7 +82,43 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $rules = [ 
+            'email'=>['email', 'unique:user,email,'.$user->id],
+            'password'=>['min:6','confirmed'],
+            'admin'=> 'in:'.User::REGULAR.','.User::ADMIN
+        ];
+        $this->validate($request,$rules);
+
+        if($request->has('name')) $user->name = $request->name;
+        
+        if($request->has('email') && $user->email != $request->email){
+            $user->verified = User::USER_NOT_VERIFIED;
+            $user->verification_token = User::generateToken();
+            $user->email = $request->email;
+        } 
+
+        if($request->has('password'))
+           $user->password = bcrypt($request->password);
+
+        if($request->has('admin')){
+            if($user->isVerified()) 
+                return response()->json([
+                    'error'=>'only verified user can update his administratior value',
+                    'code' => 409
+                ], 409);
+            $user->admin = $request->admin; 
+        }
+
+        if(!$user->isDirty())
+            return response()->json([
+                'error' => 'you must update one value at least',
+                'code'=>422
+            ],
+            422);
+
+        $user->save();
+        return response()->json(['data'=>$user],200);
     }
 
     /**
