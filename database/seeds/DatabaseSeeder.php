@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         // tabla pivote
         DB::table('category_product')->truncate();
 
-        $amount_persons = 200;
+        $amount_persons = 1000;
         $amount_categories = 30;
         $amount_products = $amount_transactions = 1000;
 
