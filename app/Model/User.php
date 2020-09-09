@@ -26,6 +26,7 @@ class User extends Authenticatable
 
     ];
 
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -52,5 +53,25 @@ class User extends Authenticatable
 
     static function generateToken(){
         return Str::random(40);
+    }
+
+    /*
+     """ mutador: modificaciones antes de insertar en la base de datos
+     """ accesor: modificar un valor dado despues de insertar en la base de datos
+     * mutadores de atibutos name y email
+     */
+
+    function setNameAttribute($value) {
+        $this->attributes['name'] = strtolower($value);
+    }
+
+    function setEmailAttribute($value) {
+        $this->attributes['email'] = strtolower($value);
+    }
+        /*
+     *accesor de nombre
+     */
+    function getNameAttribute($value){ 
+        return ucfirst($value);
     }
 }
