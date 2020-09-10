@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-      return response()->json( ['data'=>User::all()],200);
+        return $this->showAll(User::all());
     }
 
     /**
@@ -48,7 +48,8 @@ class UserController extends Controller
         $value['verified'] = User::USER_NOT_VERIFIED;
         $value['admin'] = User::REGULAR;
         $value['verication_token'] = User::generateToken();
-        return response()->json(['data'=>User::create($value)],201);
+ //       return response()->json(['data'=>User::create($value)],201);
+        return $this->showOne(User::create($value));
     }
 
     /**
@@ -59,7 +60,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return response()->json(['show'=>User::findOrFail($id)]);
+        /* return response()->json(['show'=>User::findOrFail($id)]); */
+        return $this->showOne(User::findOrFail($id));
     }
 
     /**
@@ -103,7 +105,7 @@ class UserController extends Controller
 
         if($request->has('admin')){
             if($user->isVerified()) 
-                return response()->json([
+                return $this->errorResponse([
                     'error'=>'only verified user can update his administratior value',
                     'code' => 409
                 ], 409);
@@ -111,14 +113,15 @@ class UserController extends Controller
         }
 
         if(!$user->isDirty())
-            return response()->json([
+            return $this->errorResponse([
                 'error' => 'you must update one value at least',
                 'code'=>422
             ],
             422);
 
         $user->save();
-        return response()->json(['data'=>$user],200);
+        /* return response()->json(['data'=>$user],200); */
+        return $this->showOne($user);
     }
 
     /**
