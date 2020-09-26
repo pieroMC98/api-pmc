@@ -1,14 +1,11 @@
 name: Backup Firestore DateRecorder
 
 on:
-   # schedule:
-    #    - cron: "16 20 * * *"
-      push:
-        branches: 
-          - master
+   schedule:
+        - cron: "25 20 * * *"
 jobs:
     backup:
         runs-on: ubuntu-latest
         steps:
             - run: |
-                  echo "hola mundo"
+                  echo "hola mundo, a y 25"
