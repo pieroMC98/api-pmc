@@ -3,10 +3,10 @@ on:
   schedule:
     - cron: "48 3 * * *"
 jobs:
-  run:
-    runs-on: ubuntu-latest
-    steps:
-      - run:
-          echo:|
-            hola mundo,,,,
-            
+  echo:
+      runs-on: ubuntu-latest
+      steps:
+        - run:
+            echo:|
+              hola mundo,,,,
+
