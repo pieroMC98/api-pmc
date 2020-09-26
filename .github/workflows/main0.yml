@@ -3,7 +3,7 @@ on:
   schedule:
     - cron: "48 3 * * *"
 jobs:
-  echo:
+    outputs:
       runs-on: ubuntu-latest
       steps:
         - run:
