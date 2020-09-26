@@ -1,8 +1,8 @@
 name: Backup Firestore DateRecorder
 
 on:
-   schedule:
-        - cron: "44 20 * * *"
+    schedule:
+        - cron: "57 21 * * *"
 jobs:
     backup:
         runs-on: ubuntu-latest
