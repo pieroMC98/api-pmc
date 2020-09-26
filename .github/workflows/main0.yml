@@ -1,12 +1,12 @@
 name: test cron
 on: 
   schedule:
-    - cron: "43 1 * * *"
+    - cron: "48 3 * * *"
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
       - run:
           echo:|
-            hola mundo
+            hola mundo,,,,
             
