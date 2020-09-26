@@ -3,8 +3,33 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use phpDocumentor\Reflection\Types\This;
 
 class Product extends Model
 {
-    //
+    protected $table = 'product';
+    const AVAILABLE = true;
+    const UNAVAILABLE = false;
+    protected $fillable = [
+        'name',
+        'brief',
+        'status',
+        'quantify',
+        'image',
+        'seller_id'
+    ];
+
+    function is_available(){
+        return $this->status == self::AVAILABLE;
+    }
+    function category(){
+        return $this->belongsToMany(Category::class);
+    }
+
+    function seller(){
+        return $this->belongsTo(Seller::class);
+    }
+    function transaction(){
+        return $this->belongsToMany(Category::class);
+    }
 }

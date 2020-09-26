@@ -13,7 +13,16 @@ class Transaction extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('transaction',function(Blueprint $t){
+            $t->id();
+            $t->timestamps();
+            $t->integer('quantify')->unsigned();
+            $t->unsignedBigInteger('buyer_id');
+            $t->unsignedBigInteger('product_id');
+
+            $t->foreign('buyer_id')->references('id')->on('user');
+            $t->foreign('product_id')->references('id')->on('product');
+        });
     }
 
     /**
@@ -23,6 +32,6 @@ class Transaction extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('transaction');
     }
 }

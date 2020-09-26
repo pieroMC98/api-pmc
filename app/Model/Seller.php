@@ -2,9 +2,10 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Seller extends Model
+class Seller extends User
 {
-    //
+ //   protected $table = 'seller';
+    function product(){
+        return $this->hasMany(Product::class);
+    }
 }
