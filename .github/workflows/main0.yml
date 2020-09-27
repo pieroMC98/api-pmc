@@ -1,9 +1,9 @@
-name: test cron
+name: test cron every 15min
 on: 
   schedule:
-    - cron: "48 3 * * *"
+    - cron: '*/15 * * * *'
 jobs:
-    outputs:
+    run_bash:
       runs-on: ubuntu-latest
       steps:
         - run:
