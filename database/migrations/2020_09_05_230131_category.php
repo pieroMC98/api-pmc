@@ -6,28 +6,29 @@ use Illuminate\Support\Facades\Schema;
 
 class Category extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('category',function(Blueprint $t){
-            $t->id();
-            $t->string('name');
-            $t->string('brief',1000);
-            $t->timestamps(); 
-        });
-    }
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::create('category', function (Blueprint $t) {
+			$t->id();
+			$t->string('name');
+			$t->string('brief', 1000);
+			$t->timestamps();
+			$t->softDeletes();
+		});
+	}
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('category');
-    }
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::dropIfExists('category');
+	}
 }
