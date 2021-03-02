@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Buyer;
 
-use App\Buyer;
+use App\Model\Buyer;
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 

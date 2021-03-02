@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Model;
 use App\Scope\SellerScope;
 class Seller extends User
 {

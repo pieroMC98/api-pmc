@@ -19,7 +19,7 @@ class Product extends Migration
 			$table->string('brief', 1000);
 			$table->integer('quantify')->unsigned();
 			$table->timestamps();
-			$table->string('status')->default(App\Product::UNAVAILABLE);
+			$table->string('status')->default(App\Model\Product::UNAVAILABLE);
 			// $table->integer('seller_id');
 			$table->string('image');
 			// $table->foreign('seller_id')->references('id')->on('user');
