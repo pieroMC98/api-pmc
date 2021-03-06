@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Scope;
 
 class BuyerScope implements Scope
 {
+	// Builder: contructor de la consulta
 	function apply(Builder $builder, Model $model)
 	{
 		$builder->has('transaction');

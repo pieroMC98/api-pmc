@@ -10,11 +10,13 @@ class Buyer extends User
 {
 	//   protected $table = 'buyer';
 
+	// construir e inicializar el modelo
 	protected static function boot()
 	{
 		parent::boot();
-		static::addGlobalScope(new BuyerScope());
+		static::addGlobalScope(new BuyerScope);
 	}
+
 	function transaction()
 	{
 		return $this->HasMany(Transaction::class);

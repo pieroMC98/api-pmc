@@ -54,6 +54,7 @@ class User extends Authenticatable
 	protected $casts = [
 		'email_verified_at' => 'datetime',
 	];
+
 	function isVerified()
 	{
 		return $this->verified = self::USER_VERIFIED;
@@ -83,6 +84,7 @@ class User extends Authenticatable
 	{
 		$this->attributes['email'] = strtolower($value);
 	}
+
 	/*
 	 *accesor de nombre
 	 */

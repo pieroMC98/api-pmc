@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\ApiController;
-use App\User;
+use App\Model\User;
 use Illuminate\Http\Request;
 
 class UserController extends ApiController
