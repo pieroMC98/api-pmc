@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use Transaction\TransactionCategoryController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,14 +20,41 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
  */
-Route::get('hail/{x?}',function(Request $x){
-    $x = $x->input('x');
-    if(isset($x)) echo '<h3>Hello World!</h3>';
-        else echo '<h3>Hello World! to '.$x.'</h3>';
- });
-Route::resource('/user','User\UserController',['except'=>['create', 'edit']]);
-Route::resource('buyer','Buyer\BuyerController',['only'=>['show','index']]);
-Route::resource('category','Category\CategoryController',['except'=>['create','edit']]);
-Route::resource('product','Product\ProductController',['only'=>['show','index']]);
-Route::resource('transaction','Transaction\TransactionController',['only'=>['show','index']]);
-Route::resource('seller','Seller\SellerController',['only'=>['show','index']]);
+Route::get('hail/{x?}', function (Request $x) {
+	$x = $x->input('x');
+	if (isset($x)) {
+		echo '<h3>Hello World!</h3>';
+	} else {
+		echo '<h3>Hello World! to ' . $x . '</h3>';
+	}
+});
+
+Route::resource('/user', 'User\UserController', [
+	'except' => ['create', 'edit'],
+]);
+
+Route::resource('buyer', 'Buyer\BuyerController', [
+	'only' => ['show', 'index'],
+]);
+
+Route::resource('category', 'Category\CategoryController', [
+	'except' => ['create', 'edit'],
+]);
+
+Route::resource('product', 'Product\ProductController', [
+	'only' => ['show', 'index'],
+]);
+
+Route::resource('transaction', 'Transaction\TransactionController', [
+	'only' => ['show', 'index'],
+]);
+
+/* Route::resource('transaction.categories', 'Transaction\TransactionCategoryController', [ */
+/* 'only' => ['index'], */
+/* ]); */
+Route::resource('transaction.categories', TransactionCategoryController::class)
+	->only(['only' => 'index']);
+
+Route::resource('seller', 'Seller\SellerController', [
+	'only' => ['show', 'index'],
+]);

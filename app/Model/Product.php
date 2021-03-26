@@ -26,6 +26,7 @@ class Product extends Model
 	{
 		return $this->status == self::AVAILABLE;
 	}
+
 	function category()
 	{
 		return $this->belongsToMany(Category::class);
@@ -35,6 +36,7 @@ class Product extends Model
 	{
 		return $this->belongsTo(Seller::class);
 	}
+
 	function transaction()
 	{
 		return $this->belongsToMany(Category::class);
