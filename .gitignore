@@ -12,3 +12,5 @@ npm-debug.log
 yarn-error.log
 tags
 apipmc.code-workspace
+rr
+.rr.yaml
