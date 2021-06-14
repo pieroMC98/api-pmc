@@ -5,21 +5,17 @@ namespace App\Http\Controllers\Transaction;
 use App\Http\Controllers\ApiController;
 use App\Model\Transaction;
 
-class TransactionController extends ApiController
+class TransactionSellerController extends ApiController
 {
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-
 	public function index(Transaction $transaction)
 	{
-		echo 'Aqui no hay nada que ver';
-	}
-
-	public function show(Transaction $transaction)
-	{
-		return $this->showOne($transaction);
+		$seller = $transaction->product->seller;
+		echo 'hay nada que ver';
+		return $this->showOne($seller);
 	}
 }

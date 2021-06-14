@@ -20,12 +20,10 @@ class Transaction extends Migration
 			$t->unsignedBigInteger('buyer_id');
 			$t->unsignedBigInteger('product_id');
 
-			$t
-				->foreign('buyer_id')
+			$t->foreign('buyer_id')
 				->references('id')
 				->on('user');
-			$t
-				->foreign('product_id')
+			$t->foreign('product_id')
 				->references('id')
 				->on('product');
 			$t->softDeletes();

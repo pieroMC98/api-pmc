@@ -11,6 +11,7 @@ class Category extends Model
 	protected $table = 'category';
 	protected $dates = ['deleted_at'];
 	protected $fillable = ['name', 'brief'];
+	protected $hidden = ['pivot'];
 	function product()
 	{
 		return $this->belongsToMany(Product::class);

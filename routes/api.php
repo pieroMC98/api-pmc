@@ -4,7 +4,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use Transaction\TransactionCategoryController;
+use Transaction\TransactionSellerController;
 
+use Buyer\BuyerTransactionController;
+use Buyer\BuyerProductController;
+use Buyer\BuyerSellerController;
+use Buyer\BuyerCategoryController;
+
+use Category\CategorySellerController;
+use Category\CategoryTransactionController;
+use Category\CategoryBuyerController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -52,9 +61,38 @@ Route::resource('transaction', 'Transaction\TransactionController', [
 /* Route::resource('transaction.categories', 'Transaction\TransactionCategoryController', [ */
 /* 'only' => ['index'], */
 /* ]); */
-Route::resource('transaction.categories', TransactionCategoryController::class)
-	->only(['only' => 'index']);
+Route::resource(
+	'transaction.categories',
+	TransactionCategoryController::class
+)->only(['only' => 'index']);
 
 Route::resource('seller', 'Seller\SellerController', [
 	'only' => ['show', 'index'],
 ]);
+
+Route::resource(
+	'transaction.sellers',
+	TransactionSellerController::class
+)->only(['only' => 'index']);
+
+Route::resource('buyer.transactions', BuyerTransactionController::class)->only(
+	'index'
+);
+Route::resource('buyer.products', BuyerProductController::class)->only('index');
+Route::resource('buyer.sellers', BuyerSellerController::class)->only('index');
+Route::resource('buyer.categories', BuyerCategoryController::class)->only(
+	'index'
+);
+Route::resource('category.products', CategoryProductController::class)->only(
+	'index'
+);
+Route::resource('category.sellers', CategorySellerController::class)->only(
+	'index'
+);
+Route::resource(
+	'category.transactions',
+	CategoryTransactionController::class
+)->only('index');
+Route::resource('category.buyers', CategoryBuyerController::class)->only(
+	'index'
+);
