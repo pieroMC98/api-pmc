@@ -14,6 +14,12 @@ use Buyer\BuyerCategoryController;
 use Category\CategorySellerController;
 use Category\CategoryTransactionController;
 use Category\CategoryBuyerController;
+use Category\CategoryProductController;
+
+use Seller\SellerTransactionController;
+use Seller\SellerCategoryController;
+use Seller\SellerBuyerController;
+use Seller\SellerProductController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -83,16 +89,38 @@ Route::resource('buyer.sellers', BuyerSellerController::class)->only('index');
 Route::resource('buyer.categories', BuyerCategoryController::class)->only(
 	'index'
 );
+
 Route::resource('category.products', CategoryProductController::class)->only(
+
 	'index'
 );
 Route::resource('category.sellers', CategorySellerController::class)->only(
+
 	'index'
 );
 Route::resource(
+
 	'category.transactions',
 	CategoryTransactionController::class
 )->only('index');
+
 Route::resource('category.buyers', CategoryBuyerController::class)->only(
+
 	'index'
+);
+
+Route::resource('seller.transactions', SellerTransactionController::class)->only(
+	'index'
+);
+
+Route::resource('seller.categories', SellerCategoryController::class)->only(
+	'index'
+);
+
+Route::resource('seller.buyers', SellerBuyerController::class)->only(
+	'index'
+);
+
+Route::resource('seller.products', SellerProductController::class)->except(
+	['create','show','edit']
 );
