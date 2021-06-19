@@ -7,6 +7,7 @@ use App\Model\Seller;
 use App\Model\User;
 use Illuminate\Http\Request;
 use App\Model\Product;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SellerProductController extends ApiController
 {
@@ -62,33 +63,33 @@ class SellerProductController extends ApiController
 			'image' => 'image',
 		];
 
-		if ($seller->id != $product->seller_id) {
-			return $this->errorResponse(
-				'El vendedor no es el vendedor real del producto',
-				422
-			);
-		}
-
+		$this->verificarVendedor($seller, $product);
+		// hacen lo mismo
 		$this->validate($request, $rules);
+		//$request->validate($rules); // version nueva
 
-		$product->fill($request->intersect(['name', 'brief', 'quantify']));
+		$product->fill($request->only(['name', 'brief', 'quantify']));
 
 		if ($request->has('status')) {
 			$product->status = $request->status;
 			if (
 				$product->is_available() &&
 				$product->category()->count() == 0
-			)
+			) {
 				return $this->errorResponse(
 					'Un producto activo debe tener al menos una categoria',
 					409
 				);
+			}
 		}
 
-		if( $product->isClean() )
-				return $this->errorResponse(
-					'Se debe especificar al menos un valor diferente para actualizar',
-					422);
+		if ($product->isClean()) {
+			return $this->errorResponse(
+				'Se debe especificar al menos un valor diferente para actualizar',
+				422
+			);
+		}
+
 		$product->save();
 		return $this->showOne($product);
 	}
@@ -99,8 +100,20 @@ class SellerProductController extends ApiController
 	 * @param  \App\Model\Seller  $seller
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(Seller $seller)
+	public function destroy(Seller $seller, Product $product)
 	{
-		//
+		$this->verificarVendedor($seller, $product);
+		$product->delete();
+		return $this->showOne($product);
+	}
+
+	private function verificarVendedor(Seller $seller, Product $product)
+	{
+		if ($seller->id != $product->seller_id) {
+			throw new HttpException(
+				422,
+				'El vendedor no es el vendedor real del producto'
+			);
+		}
 	}
 }
