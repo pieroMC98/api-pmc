@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
 		factory(User::class, $amount_persons)->create();
 		factory(Category::class, $amount_categories)->create();
 
-		// al momento que creamos un producto, lo asociamos con una categoria
+		// al momento que creamos un producto, lo asociamos con una lista de categorias
 		factory(Product::class, $amount_transactions)
 			->create()
 			->each(function ($products) {

@@ -21,10 +21,11 @@ use Seller\SellerCategoryController;
 use Seller\SellerBuyerController;
 use Seller\SellerProductController;
 
-
 use Product\ProductTransactionController;
 use Product\ProductBuyerController;
 use Product\ProductCategoryController;
+use Product\ProductBuyerTransactionController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -96,48 +97,47 @@ Route::resource('buyer.categories', BuyerCategoryController::class)->only(
 );
 
 Route::resource('category.products', CategoryProductController::class)->only(
-
 	'index'
 );
 Route::resource('category.sellers', CategorySellerController::class)->only(
-
 	'index'
 );
 Route::resource(
-
 	'category.transactions',
 	CategoryTransactionController::class
 )->only('index');
 
 Route::resource('category.buyers', CategoryBuyerController::class)->only(
-
 	'index'
 );
 
-Route::resource('seller.transactions', SellerTransactionController::class)->only(
-	'index'
-);
+Route::resource(
+	'seller.transactions',
+	SellerTransactionController::class
+)->only('index');
 
 Route::resource('seller.categories', SellerCategoryController::class)->only(
 	'index'
 );
 
-Route::resource('seller.buyers', SellerBuyerController::class)->only(
-	'index'
-);
+Route::resource('seller.buyers', SellerBuyerController::class)->only('index');
 
-Route::resource('seller.products', SellerProductController::class)->except(
-	['create','show','edit']
-);
+Route::resource('seller.products', SellerProductController::class)->except([
+	'create',
+	'show',
+	'edit',
+]);
 
-Route::resource('product.transactions', ProductTransactionController::class)->only(
-	'index'
-);
+Route::resource(
+	'product.transactions',
+	ProductTransactionController::class
+)->only('index');
 
-Route::resource('product.buyers', ProductBuyerController::class)->only(
-	'index'
-);
-Route::resource('product.categories', ProductCategoryController::class)->only(
-	[
-	'index', 'delete','update']
-);
+Route::resource('product.buyers', ProductBuyerController::class)->only('index');
+
+Route::resource('product.categories', ProductCategoryController::class)->only([
+	'index',
+	'destroy',
+	'update',
+]);
+Route::resource('product.buyers.transactions', ProductBuyerTransactionController::class)->only('store');

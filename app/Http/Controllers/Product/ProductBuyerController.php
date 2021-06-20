@@ -13,9 +13,9 @@ class ProductBuyerController extends ApiController
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index(Product $p)
+	public function index(Product $product)
 	{
-		$buyers = $p
+		$buyers = $product
 			->transactions()
 			->with('buyer')
 			->get()
