@@ -4,7 +4,6 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use phpDocumentor\Reflection\Types\This;
 
 class Product extends Model
 {
@@ -40,6 +39,6 @@ class Product extends Model
 
 	function transaction()
 	{
-		return $this->belongsToMany(Category::class);
+		return $this->belongsToMany(Transaction::class);
 	}
 }
