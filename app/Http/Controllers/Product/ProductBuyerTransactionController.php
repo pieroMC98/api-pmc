@@ -56,16 +56,16 @@ class ProductBuyerTransactionController extends Controller
 			);
 		}
 
-		return DB::transactions(function () use ($request, $product, $buyer){
+		return DB::transactions(function () use ($request, $product, $buyer) {
 			$product->quantify -= $request->quantify;
 			$product->save();
 
 			$transactions = Transaction::create([
 				'quantify' => $request->quantify,
 				'buyer_id' => $buyer->id,
-				'product_id' => $product->id
+				'product_id' => $product->id,
 			]);
-			return $this->showOne($transactions,201);
+			return $this->showOne($transactions, 201);
 		});
 	}
 }

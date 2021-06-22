@@ -7,6 +7,7 @@ use App\Model\Seller;
 use App\Model\User;
 use Illuminate\Http\Request;
 use App\Model\Product;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SellerProductController extends ApiController
@@ -39,7 +40,7 @@ class SellerProductController extends ApiController
 		$this->validate($request, $rules);
 		$data = $request->all();
 		$data['status'] = Product::UNAVAILABLE;
-		$data['image'] = $request->image->store('');// ya est'a definido en filesystem
+		$data['image'] = $request->image->store(''); // ya est'a definido en filesystem
 		$data['seller_id'] = $seller->id;
 
 		$product = Product::create($data);
@@ -83,6 +84,13 @@ class SellerProductController extends ApiController
 			}
 		}
 
+		// para poder cargar la imagen es con m'etodo POST, pero pasamos _method => PUT al
+		// formulario para que Laravel entienda que realmente es un metodo PUT|PATCH
+		if ($request->hasFile('image')) {
+			Storage::delete($product->image);
+			$product->image = $request->image->store('');
+		}
+
 		if ($product->isClean()) {
 			return $this->errorResponse(
 				'Se debe especificar al menos un valor diferente para actualizar',
@@ -103,6 +111,7 @@ class SellerProductController extends ApiController
 	public function destroy(Seller $seller, Product $product)
 	{
 		$this->verificarVendedor($seller, $product);
+		Storage::delete($product->image);
 		$product->delete();
 		return $this->showOne($product);
 	}

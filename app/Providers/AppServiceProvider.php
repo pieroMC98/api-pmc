@@ -26,9 +26,10 @@ class AppServiceProvider extends ServiceProvider
 	public function boot()
 	{
 		Schema::defaultStringLength(191);
-		Product::updated(function($product){
-			if($product->quantify == 0 && $product->is_available())
+		Product::updated(function ($product) {
+			if ($product->quantify == 0 && $product->is_available()) {
 				$product->status = Product::UNAVAILABLE;
+			}
 			$product->save();
 		});
 	}
