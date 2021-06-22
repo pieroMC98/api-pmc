@@ -39,7 +39,7 @@ class SellerProductController extends ApiController
 		$this->validate($request, $rules);
 		$data = $request->all();
 		$data['status'] = Product::UNAVAILABLE;
-		$data['image'] = '1.jpg';
+		$data['image'] = $request->image->store('');// ya est'a definido en filesystem
 		$data['seller_id'] = $seller->id;
 
 		$product = Product::create($data);
