@@ -54,6 +54,8 @@ Route::resource('/user', 'User\UserController', [
 	'except' => ['create', 'edit'],
 ]);
 
+Route::name('verify')->get('user/verify/{token}','User\UserController@verify');
+
 Route::resource('buyer', 'Buyer\BuyerController', [
 	'only' => ['show', 'index'],
 ]);

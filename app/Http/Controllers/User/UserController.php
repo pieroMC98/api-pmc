@@ -148,4 +148,13 @@ class UserController extends ApiController
 		//$user = User::findOrFail($id);
 		$user->delete();
 	}
+
+	function verify($token)
+	{
+		$user = User::where('verification_token', $token)->firstOrFail();
+		$user->verified = User::USER_VERIFIED;
+		$user->verification_token = null;
+		$user->save();
+		return $this->showMsg('La cuenta ha sido verificada');
+	}
 }
