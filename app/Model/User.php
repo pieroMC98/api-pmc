@@ -59,6 +59,7 @@ class User extends Authenticatable
 	{
 		return $this->verified = self::USER_VERIFIED;
 	}
+
 	function isAdmin()
 	{
 		return $this->admin == self::ADMIN;
@@ -92,4 +93,5 @@ class User extends Authenticatable
 	{
 		return ucfirst($value);
 	}
+
 }
