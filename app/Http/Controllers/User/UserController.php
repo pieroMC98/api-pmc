@@ -62,7 +62,7 @@ class UserController extends ApiController
 	{
 		/* return response()->json(['show'=>User::findOrFail($id)]); */
 		// inyecciones implicitas
-		//return $this->showOne(User::findOrFail($id));
+		// return $this->showOne(User::findOrFail($id));
 		return $this->showOne($user);
 	}
 
