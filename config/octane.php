@@ -5,20 +5,24 @@ use Laravel\Octane\Events\RequestHandled;
 use Laravel\Octane\Events\RequestReceived;
 use Laravel\Octane\Events\RequestTerminated;
 use Laravel\Octane\Events\TaskReceived;
+use Laravel\Octane\Events\TaskTerminated;
 use Laravel\Octane\Events\TickReceived;
+use Laravel\Octane\Events\TickTerminated;
 use Laravel\Octane\Events\WorkerErrorOccurred;
 use Laravel\Octane\Events\WorkerStarting;
 use Laravel\Octane\Events\WorkerStopping;
 use Laravel\Octane\Listeners\CollectGarbage;
 use Laravel\Octane\Listeners\DisconnectFromDatabases;
 use Laravel\Octane\Listeners\EnsureUploadedFilesAreValid;
+use Laravel\Octane\Listeners\EnsureUploadedFilesCanBeMoved;
 use Laravel\Octane\Listeners\FlushTemporaryContainerInstances;
 use Laravel\Octane\Listeners\ReportException;
 use Laravel\Octane\Listeners\StopWorkerIfNecessary;
 use Laravel\Octane\Octane;
 
 return [
-	/*
+
+    /*
     |--------------------------------------------------------------------------
     | Octane Server
     |--------------------------------------------------------------------------
@@ -27,11 +31,13 @@ return [
     | when starting, restarting, or stopping your server via the CLI. You
     | are free to change this to the supported server of your choosing.
     |
+    | Supported: "roadrunner", "swoole"
+    |
     */
 
-	'server' => 'roadrunner',
+    'server' => env('OCTANE_SERVER', 'roadrunner'),
 
-	/*
+    /*
     |--------------------------------------------------------------------------
     | Force HTTPS
     |--------------------------------------------------------------------------
@@ -42,9 +48,9 @@ return [
     |
     */
 
-	'https' => env('OCTANE_HTTPS', false),
+    'https' => env('OCTANE_HTTPS', false),
 
-	/*
+    /*
     |--------------------------------------------------------------------------
     | Octane Listeners
     |--------------------------------------------------------------------------
@@ -55,50 +61,61 @@ return [
     |
     */
 
-	'listeners' => [
-		WorkerStarting::class => [EnsureUploadedFilesAreValid::class],
+    'listeners' => [
+        WorkerStarting::class => [
+            EnsureUploadedFilesAreValid::class,
+            EnsureUploadedFilesCanBeMoved::class,
+        ],
 
-		RequestReceived::class => [
-			...Octane::prepareApplicationForNextOperation(),
-			...Octane::prepareApplicationForNextRequest(),
-			//
-		],
+        RequestReceived::class => [
+            ...Octane::prepareApplicationForNextOperation(),
+            ...Octane::prepareApplicationForNextRequest(),
+            //
+        ],
 
-		RequestHandled::class => [
-			//
-		],
+        RequestHandled::class => [
+            //
+        ],
 
-		RequestTerminated::class => [
-			//
-		],
+        RequestTerminated::class => [
+            //
+        ],
 
-		TaskReceived::class => [
-			...Octane::prepareApplicationForNextOperation(),
-			//
-		],
+        TaskReceived::class => [
+            ...Octane::prepareApplicationForNextOperation(),
+            //
+        ],
 
-		TickReceived::class => [
-			...Octane::prepareApplicationForNextOperation(),
-			//
-		],
+        TaskTerminated::class => [
+            //
+        ],
 
-		OperationTerminated::class => [
-			FlushTemporaryContainerInstances::class,
-			// DisconnectFromDatabases::class,
-			// CollectGarbage::class,
-		],
+        TickReceived::class => [
+            ...Octane::prepareApplicationForNextOperation(),
+            //
+        ],
 
-		WorkerErrorOccurred::class => [
-			ReportException::class,
-			StopWorkerIfNecessary::class,
-		],
+        TickTerminated::class => [
+            //
+        ],
 
-		WorkerStopping::class => [
-			//
-		],
-	],
+        OperationTerminated::class => [
+            FlushTemporaryContainerInstances::class,
+            // DisconnectFromDatabases::class,
+            // CollectGarbage::class,
+        ],
 
-	/*
+        WorkerErrorOccurred::class => [
+            ReportException::class,
+            StopWorkerIfNecessary::class,
+        ],
+
+        WorkerStopping::class => [
+            //
+        ],
+    ],
+
+    /*
     |--------------------------------------------------------------------------
     | Warm / Flush Bindings
     |--------------------------------------------------------------------------
@@ -109,37 +126,15 @@ return [
     |
     */
 
-	'warm' => [...Octane::defaultServicesToWarm()],
+    'warm' => [
+        ...Octane::defaultServicesToWarm(),
+    ],
 
-	'flush' => [
-		//
-	],
+    'flush' => [
+        //
+    ],
 
-	/*
-    |--------------------------------------------------------------------------
-    | Garbage Collection Threshold
-    |--------------------------------------------------------------------------
-    |
-    | When executing long-lived PHP scripts such as Octane, memory can build
-    | up before being cleared by PHP. You can force Octane to run garbage
-    | collection if your application consumes this amount of megabytes.
-    |
-    */
-
-	'garbage' => 50,
-
-	/*
-    |--------------------------------------------------------------------------
-    | Maximum Execution Time
-    |--------------------------------------------------------------------------
-    |
-    | (info) 0 means no maximum limit
-    |
-    */
-
-	'max_execution_time' => 30,
-
-	/*
+    /*
     |--------------------------------------------------------------------------
     | Octane Cache Table
     |--------------------------------------------------------------------------
@@ -150,12 +145,12 @@ return [
     |
     */
 
-	'cache' => [
-		'rows' => 1000,
-		'bytes' => 10000,
-	],
+    'cache' => [
+        'rows' => 1000,
+        'bytes' => 10000,
+    ],
 
-	/*
+    /*
     |--------------------------------------------------------------------------
     | Octane Swoole Tables
     |--------------------------------------------------------------------------
@@ -166,10 +161,60 @@ return [
     |
     */
 
-	'tables' => [
-		'example:1000' => [
-			'name' => 'string:1000',
-			'votes' => 'int',
-		],
-	],
+    'tables' => [
+        'example:1000' => [
+            'name' => 'string:1000',
+            'votes' => 'int',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | File Watching
+    |--------------------------------------------------------------------------
+    |
+    | The following list of files and directories will be watched when using
+    | the --watch option offered by Octane. If any of the directories and
+    | files are changed, Octane will automatically reload your workers.
+    |
+    */
+
+    'watch' => [
+        'app',
+        'bootstrap',
+        'config',
+        'database',
+        'public/**/*.php',
+        'resources/**/*.php',
+        'routes',
+        'composer.lock',
+        '.env',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Garbage Collection Threshold
+    |--------------------------------------------------------------------------
+    |
+    | When executing long-lived PHP scripts such as Octane, memory can build
+    | up before being cleared by PHP. You can force Octane to run garbage
+    | collection if your application consumes this amount of megabytes.
+    |
+    */
+
+    'garbage' => 50,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Maximum Execution Time
+    |--------------------------------------------------------------------------
+    |
+    | The following setting configures the maximum execution time for requests
+    | being handled by Octane. You may set this value to 0 to indicate that
+    | there isn't a specific time limit on Octane request execution time.
+    |
+    */
+
+    'max_execution_time' => 30,
+
 ];
