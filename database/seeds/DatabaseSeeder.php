@@ -25,6 +25,12 @@ class DatabaseSeeder extends Seeder
 		Transaction::truncate();
 		// tabla pivote
 		DB::table('category_product')->truncate();
+		
+		// para que no cree mensajes
+		User::flushEventListeners();
+		Product::flushEventListeners();
+		Transaction::flushEventListeners();
+		Category::flushEventListeners();
 
 		$amount_persons = 1000;
 		$amount_categories = 30;
