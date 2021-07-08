@@ -8,12 +8,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class UserCreated extends Mailable
+class UserCreatedByEvent extends Mailable
 {
 	use Queueable, SerializesModels;
-	// variable a inyectar
 	public $user;
-
 	/**
 	 * Create a new message instance.
 	 *
@@ -21,7 +19,6 @@ class UserCreated extends Mailable
 	 */
 	public function __construct(User $user)
 	{
-		// lo inyecta a la vista
 		$this->user = $user;
 	}
 
@@ -32,10 +29,8 @@ class UserCreated extends Mailable
 	 */
 	public function build()
 	{
-		// para enviar texto plano
 		return $this->text('emails.welcome')->subject(
-			'Por favor confirme su email(By Event)'
+			'Por favor confirme su email'
 		);
-		//return $this->view('view.name');
 	}
 }

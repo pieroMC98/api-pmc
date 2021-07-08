@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Events\UserRegisterEvent;
 use App\Http\Controllers\ApiController;
 use App\Mail\UserCreated;
 use App\Model\User;
@@ -51,7 +52,9 @@ class UserController extends ApiController
 		$value['admin'] = User::REGULAR;
 		$value['verification_token'] = User::generateToken();
 		//       return response()->json(['data'=>User::create($value)],201);
-		return $this->showOne(User::create($value));
+		$created = User::create($value);
+		event(new UserRegisterEvent($created));
+		return $this->showOne($created);
 	}
 
 	/**
