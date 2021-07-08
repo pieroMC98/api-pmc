@@ -69,7 +69,7 @@ class Kernel extends HttpKernel
 		'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
 		'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 		'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-		// middleware nombrados no reciben parametros, tenemos que hacerlo global
-		'signature' => SignatureMiddleware::class
+		// middleware globales no reciben parametros, tenemos que hacerlo nombrado
+		'signature' => SignatureMiddleware::class,
 	];
 }

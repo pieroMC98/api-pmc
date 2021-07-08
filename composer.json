@@ -16,6 +16,7 @@
 		"laravel/legacy-factories": "^1.0",
 		"laravel/octane": "^1.0",
 		"laravel/tinker": "^2.0",
+		"spatie/laravel-fractal": "^5.8",
 		"spiral/roadrunner": "^2.3"
 	},
 	"require-dev": {
