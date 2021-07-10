@@ -13,7 +13,7 @@ class TransactionController extends ApiController
 	 * @return \Illuminate\Http\Response
 	 */
 
-	public function index(Transaction $transaction)
+	public function index()
 	{
 		echo 'Aqui no hay nada que ver';
 	}

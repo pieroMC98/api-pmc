@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Transformers\UserTransformer;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+	public $transformer = UserTransformer::class;
 	protected $table = 'user';
 	use Notifiable;
 	use HasFactory;
