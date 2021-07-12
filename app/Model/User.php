@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Http\Resources\UserCollection;
 use App\Transformers\UserTransformer;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -94,5 +95,10 @@ class User extends Authenticatable
 	function getNameAttribute($value)
 	{
 		return ucfirst($value);
+	}
+
+	function getResource()
+	{
+		return UserCollection::class;
 	}
 }

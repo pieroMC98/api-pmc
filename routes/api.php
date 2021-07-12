@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Resources\UserResource;
+use App\Model\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +17,7 @@ use Category\CategorySellerController;
 use Category\CategoryTransactionController;
 use Category\CategoryBuyerController;
 use Category\CategoryProductController;
-
+use Illuminate\Database\Eloquent\Model;
 use Seller\SellerTransactionController;
 use Seller\SellerCategoryController;
 use Seller\SellerBuyerController;
@@ -54,8 +56,24 @@ Route::resource('/user', 'User\UserController', [
 	'except' => ['create', 'edit'],
 ]);
 
-Route::name('verify')->get('user/verify/{token}','User\UserController@verify');
-Route::name('resend')->get('user/{user}/resend','User\UserController@resend');
+Route::name('userr')->get('userr/{user}/sort_by/{attribute}', function (
+	$user,
+	$attribute
+) {
+	return (new UserResource(User::find($user)))->additional([
+		'meta' => ['atr' => $attribute],
+	]);
+});
+
+Route::get('/{class}/{id}/sort_by/{atr}', function ($class) {
+	$c = "\App\Model\\".ucfirst($class);
+	$c = call_user_func($c."::class");
+	dd($c);
+	dd(new $c);
+})->where(['class' => '[a-z]+', 'id' => '[1-9]+', 'atr' => '[a-z]+']);
+
+Route::name('verify')->get('user/verify/{token}', 'User\UserController@verify');
+Route::name('resend')->get('user/{user}/resend', [User::class,'resend']);
 
 Route::resource('buyer', 'Buyer\BuyerController', [
 	'only' => ['show', 'index'],
@@ -143,4 +161,7 @@ Route::resource('product.categories', ProductCategoryController::class)->only([
 	'destroy',
 	'update',
 ]);
-Route::resource('product.buyers.transactions', ProductBuyerTransactionController::class)->only('store');
+Route::resource(
+	'product.buyers.transactions',
+	ProductBuyerTransactionController::class
+)->only('store');

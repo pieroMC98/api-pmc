@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Events\UserRegisterEvent;
 use App\Http\Controllers\ApiController;
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
 use App\Mail\UserCreated;
 use App\Model\User;
 use Illuminate\Http\Request;
@@ -18,6 +20,7 @@ class UserController extends ApiController
 	 */
 	public function index()
 	{
+		return $this->getResourceCollection(UserCollection::class, User::class);
 		return $this->showAll(User::all());
 	}
 
@@ -54,6 +57,7 @@ class UserController extends ApiController
 		//       return response()->json(['data'=>User::create($value)],201);
 		$created = User::create($value);
 		event(new UserRegisterEvent($created));
+
 		return $this->showOne($created);
 	}
 
@@ -68,6 +72,8 @@ class UserController extends ApiController
 		/* return response()->json(['show'=>User::findOrFail($id)]); */
 		// inyecciones implicitas
 		// return $this->showOne(User::findOrFail($id));
+		return $this->getResource(UserResource::class, $user);
+		return new UserResource($user);
 		return $this->showOne($user);
 	}
 

@@ -45,4 +45,9 @@ class UserTransformer extends TransformerAbstract
 				: null,
 		];
 	}
+
+	static function originalAttribute($index)
+	{
+		return null;
+	}
 }
