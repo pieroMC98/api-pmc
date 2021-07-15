@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AttributeLabels;
 use App\Http\Middleware\SignatureMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -45,6 +46,7 @@ class Kernel extends HttpKernel
 		'api' => [
 			'signature:X-Aplication-Nameapi',
 			'throttle:60,1',
+			//'input:salida',
 			\Illuminate\Routing\Middleware\SubstituteBindings::class,
 		],
 	];
@@ -71,5 +73,6 @@ class Kernel extends HttpKernel
 		'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 		// middleware globales no reciben parametros, tenemos que hacerlo nombrado
 		'signature' => SignatureMiddleware::class,
+		'input' => AttributeLabels::class,
 	];
 }

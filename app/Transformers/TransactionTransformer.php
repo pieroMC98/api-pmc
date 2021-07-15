@@ -45,4 +45,17 @@ class TransactionTransformer extends TransformerAbstract
 				: null,
 		];
 	}
+	static function attributesLabels($input)
+	{
+		$original = [
+			'id' => 'referencia',
+			'quantify' => 'cantidad',
+			'buyer_id' => 'comprador',
+			'product_id' => 'producto',
+			'created_at' => 'fechaCreacion',
+			'update_at' => 'fechaActualizacion',
+			'delete_at' => 'fechaEliminacion',
+		];
+		return isset(($rt = $original[$input])) ? $rt : null;
+	}
 }

@@ -46,8 +46,18 @@ class UserTransformer extends TransformerAbstract
 		];
 	}
 
-	static function originalAttribute($index)
+	static function attributesLabels($input)
 	{
-		return null;
+		$original = [
+			'id' => 'referencia',
+			'name' => 'nombre',
+			'email' => 'correo',
+			'verified' => 'verificado',
+			'admin' => 'administrador', // de la BD recibimos cadena, por lo que parseamdo
+			'created_at' => 'fechaCreacion',
+			'updated_at' => 'fechaActualizacion',
+			'delete_at' => 'fechaEliminacion',
+		];
+		return isset(($rt = $original[$input])) ? $rt : null;
 	}
 }

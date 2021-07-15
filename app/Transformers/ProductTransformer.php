@@ -51,4 +51,25 @@ class ProductTransformer extends TransformerAbstract
 				: null,
 		];
 	}
+
+	static function attributesLabels($input)
+	{
+		$original = [
+			'id' => 'referencia',
+			'name' => 'titulo',
+			'brief' => 'detalles',
+			'quantify' => 'disponible',
+			'status' => 'estado',
+			'image' => 'imagen',
+			'seller_id' => 'vendedor',
+			'created_at' => 'fechaCreacion',
+			'update_at' => 'fechaActualizacion',
+			'delete_at' => 'fechaEliminacion',
+		];
+		if (($rt = $original[$input]) !== null) {
+			return $rt;
+		} else {
+			return null;
+		}
+	}
 }

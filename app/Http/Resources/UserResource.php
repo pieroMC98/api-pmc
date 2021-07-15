@@ -15,7 +15,7 @@ class UserResource extends JsonResource
 	 */
 	public function toArray($request)
 	{
-		$array = [
+		return [
 			'referencia' => (int) $this->id,
 			'nombre' => (string) $this->name,
 			'correo' => (string) $this->email,
@@ -27,6 +27,5 @@ class UserResource extends JsonResource
 				? (string) $this->delete_at
 				: null,
 		];
-		return $array;
 	}
 }

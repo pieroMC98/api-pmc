@@ -54,7 +54,7 @@ Route::get('hail/{x?}', function (Request $x) {
 
 Route::resource('/user', 'User\UserController', [
 	'except' => ['create', 'edit'],
-]);
+])->middleware('input');
 
 Route::name('userr')->get('userr/{user}/sort_by/{attribute}', function (
 	$user,

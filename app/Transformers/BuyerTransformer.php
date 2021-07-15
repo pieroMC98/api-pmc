@@ -48,4 +48,18 @@ class BuyerTransformer extends TransformerAbstract
 				: null,
 		];
 	}
+
+	static function attributesLabels($input)
+	{
+		$original = [
+			'id' => 'referencia',
+			'name' => 'nombre',
+			'email' => 'correo',
+			'verified' => 'verificado',
+			'created_at' => 'fechaCreacion',
+			'update_at' => 'fechaActualizacion',
+			'delete_at' => 'fechaEliminacion',
+		];
+		return isset(($rt = $original[$input])) ? $rt : null;
+	}
 }
