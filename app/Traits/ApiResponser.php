@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Collection;
 use App\Http\Resources;
 use App\Http\Resources\UserCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 trait ApiResponser
 {
@@ -28,6 +29,7 @@ trait ApiResponser
 		$transformer = $c->first()->transformer;
 		$c = $this->sortData($c);
 		//$c = $this->transformData($c, $transformer);
+		$c = $this->paginate($c);
 		return $this->successResponse($c, $code);
 	}
 
@@ -70,5 +72,13 @@ trait ApiResponser
 	protected function getResourceCollection($std, $class)
 	{
 		return new $std($class::all());
+	}
+
+	protected function paginate(Collection $collection){
+		$page = LengthAwarePaginator::resolveCurrentPage();
+		$perPage = 15;
+		$result = $collection->slice(($page-1)*$perPage, $perPage)->values();
+		//$paginated = new LengthAwarePaginator)(
+
 	}
 }

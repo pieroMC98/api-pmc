@@ -45,6 +45,7 @@ class TransactionTransformer extends TransformerAbstract
 				: null,
 		];
 	}
+
 	static function attributesLabels($input)
 	{
 		$original = [
