@@ -47,13 +47,16 @@ class CategoryTransformer extends TransformerAbstract
 	static function attributesLabels($input)
 	{
 		$original = [
-			'id' => 'referencia',
-			'name' => 'titulo',
-			'brief' => 'detalles',
-			'created_at' => 'fechaCreacion',
-			'update_at' => 'fechaActualizacion',
-			'delete_at' => 'fechaEliminacion',
+			'referencia' => 'id',
+			'titulo' => 'name',
+			'detalles' => 'brief',
+			'fechaCreacion' => 'created_at',
+			'fechaActualizacion' => 'update_at',
+			'fechaEliminacion' => 'delete_at',
 		];
-		return isset(($rt = $original[$input])) ? $rt : null;
+		if(isset($original[$input]))
+			return $original[$input];
+		else
+			return null;
 	}
 }

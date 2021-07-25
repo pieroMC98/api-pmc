@@ -55,21 +55,20 @@ class ProductTransformer extends TransformerAbstract
 	static function attributesLabels($input)
 	{
 		$original = [
-			'id' => 'referencia',
-			'name' => 'titulo',
-			'brief' => 'detalles',
-			'quantify' => 'disponible',
-			'status' => 'estado',
-			'image' => 'imagen',
-			'seller_id' => 'vendedor',
-			'created_at' => 'fechaCreacion',
-			'update_at' => 'fechaActualizacion',
-			'delete_at' => 'fechaEliminacion',
+			'referencia'=>'id',
+			'titulo'=>'name',
+			'detalles'=>'brief',
+			'disponible'=>'quantify',
+			'estado'=>'status',
+			'imagen'=>'image',
+			'vendedor'=>'seller_id',
+			'fechaCreacion'=>'created_at',
+			'fechaActualizacion'=>'update_at',
+			'fechaEliminacion'=>'delete_at'
 		];
-		if (($rt = $original[$input]) !== null) {
-			return $rt;
-		} else {
+		if(isset($original[$input]))
+			return $original[$input];
+		else
 			return null;
-		}
 	}
 }

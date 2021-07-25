@@ -49,15 +49,18 @@ class UserTransformer extends TransformerAbstract
 	static function attributesLabels($input)
 	{
 		$original = [
-			'id' => 'referencia',
-			'name' => 'nombre',
-			'email' => 'correo',
-			'verified' => 'verificado',
-			'admin' => 'administrador', // de la BD recibimos cadena, por lo que parseamdo
-			'created_at' => 'fechaCreacion',
-			'updated_at' => 'fechaActualizacion',
-			'delete_at' => 'fechaEliminacion',
+			'referencia' => 'id',
+			'nombre' => 'name',
+			'correo' => 'email',
+			'verificado' => 'verified',
+			'administrador' => 'admin', // de la BD recibimos cadena, por lo que parseamdo
+			'fechaCreacion' => 'created_at',
+			'fechaActualizacion' => 'updated_at',
+			'fechaEliminacion' => 'delete_at',
 		];
-		return isset(($rt = $original[$input])) ? $rt : null;
+		if(isset($original[$input]))
+			return $original[$input];
+		else
+			return null;
 	}
 }

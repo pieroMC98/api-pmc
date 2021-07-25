@@ -5,8 +5,6 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Collection;
-use App\Http\Resources;
-use App\Http\Resources\UserCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 trait ApiResponser
@@ -27,10 +25,10 @@ trait ApiResponser
 			return $this->successResponse(['data' => $c], $code);
 		}
 		$transformer = $c->first()->transformer;
-		$c = $this->sortData($c);
-		//$c = $this->transformData($c, $transformer);
-		$c = $this->paginate($c);
-		return $this->successResponse($c, $code);
+		$ordenar = $this->sortData($c, $transformer);
+		$paginated = $this->paginate($ordenar);
+		$rt = $this->transformData($paginated, $transformer);
+		return $this->successResponse($rt, $code);
 	}
 
 	protected function showOne(Model $c, $code = 200)
@@ -51,15 +49,14 @@ trait ApiResponser
 		return $transformation->toArray();
 	}
 
-	private function sortData(Collection $collection)
+	private function sortData(Collection $collection, $transformer)
 	{
 		// usamos el helper request ya que no lo estamos pasando por parametros
 		if (request()->has('sort_by')) {
-			$atribute = request()->sort_by; //sort_by es el valor del atributo que pasamos en el request
-			$collection = $collection->sortBy->{$atribute}; // equivalente a {'property'}
+			$attribute = $transformer::attributesLabels(request()->sort_by); //sort_by es el valor del atributo que pasamos en el request
+			if( null !== $attribute )$collection = $collection->sortBy->{$attribute}; // equivalente a {'property'}
 			// o $collection = $collection->sortBy($atribute);// equivalente a {'property'}
 		}
-		return new UserCollection($collection);
 		return $collection;
 	}
 
@@ -78,7 +75,10 @@ trait ApiResponser
 		$page = LengthAwarePaginator::resolveCurrentPage();
 		$perPage = 15;
 		$result = $collection->slice(($page-1)*$perPage, $perPage)->values();
-		//$paginated = new LengthAwarePaginator)(
-
+		$paginated = new LengthAwarePaginator($result,$collection->count(),$perPage,$page,[
+			'path' => LengthAwarePaginator::resolveCurrentPath(),
+		]);
+		$paginated->appends(request()->all());
+		return $paginated;
 	}
 }

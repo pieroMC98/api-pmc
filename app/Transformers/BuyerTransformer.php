@@ -52,14 +52,18 @@ class BuyerTransformer extends TransformerAbstract
 	static function attributesLabels($input)
 	{
 		$original = [
-			'id' => 'referencia',
-			'name' => 'nombre',
-			'email' => 'correo',
-			'verified' => 'verificado',
-			'created_at' => 'fechaCreacion',
-			'update_at' => 'fechaActualizacion',
-			'delete_at' => 'fechaEliminacion',
+			'referencia' => 'id',
+			'nombre' => 'name',
+			'correo' => 'email',
+			'verificado' => 'verified',
+			'fechaCreacion' => 'created_at',
+			'fechaActualizacion' => 'update_at',
+			'fechaEliminacion' => 'delete_at',
 		];
-		return isset(($rt = $original[$input])) ? $rt : null;
+
+		if(isset($original[$input]))
+			return $original[$input];
+		else
+			return null;
 	}
 }
