@@ -4,9 +4,6 @@ namespace App\Http\Controllers\User;
 
 use App\Events\UserRegisterEvent;
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\UserCollection;
-use App\Http\Resources\UserResource;
 use App\Mail\UserCreated;
 use App\Model\User;
 use Illuminate\Http\Request;
@@ -23,8 +20,6 @@ class UserController extends ApiController
 	{
 		/* return new UserCollection(User::all()); */
 		return $this->showAll(User::all());
-		dd(User::class);
-		return (User::all());
 	}
 
 	/**

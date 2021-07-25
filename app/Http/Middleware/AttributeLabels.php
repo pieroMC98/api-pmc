@@ -15,12 +15,9 @@ class AttributeLabels
 	 * @param  \Closure  $next
 	 * @return mixed
 	 */
+	// eres imbecil
 	public function handle(Request $request, Closure $next)
 	{
-		if ($request->user != null) {
 			return $next($request);
-		} else {
-			die();
-		}
 	}
 }
