@@ -1,12 +1,17 @@
 <template>
 	<div>
 		<h2>Tabla de ejemplo</h2>
-		<b-form-select v-model="selected" :options="options"></b-form-select>
-		<b-form-input
-			v-model="question"
-			type="number"
-			placeholder="campo"
-		></b-form-input>
+		<b-input-grupo size="lg">
+			<b-form-select
+				v-model="selected"
+				:options="options"
+			></b-form-select>
+			<b-form-input
+				v-model="question"
+				type="number"
+				placeholder="campo"
+			></b-form-input>
+		</b-input-grupo>
 		<hr />
 		<span>{{ answer }}</span>
 		<div>
