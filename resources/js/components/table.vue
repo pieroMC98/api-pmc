@@ -1,12 +1,7 @@
 <template>
 	<div>
 		<h2>Tabla de ejemplo</h2>
-		<b-form-select
-			@change="setSelect"
-			v-model="selected"
-			:options="options"
-		></b-form-select>
-		<hr />
+		<b-form-select v-model="selected" :options="options"></b-form-select>
 		<b-form-input
 			v-model="question"
 			type="number"
@@ -14,8 +9,6 @@
 		></b-form-input>
 		<hr />
 		<span>{{ answer }}</span>
-		<hr />
-		<span>el link es : {{ link }}</span>
 		<div>
 			<b-table striped hover :items="response"></b-table>
 		</div>
@@ -23,23 +16,25 @@
 </template>
 
 <script>
-import { isEmpty, isNumber } from 'lodash'
+import { isEmpty } from 'lodash'
 export default {
 	data() {
 		return {
-			campo: '',
 			answer: null,
 			question: '',
 			response: [],
 			options: ['user', 'product', 'transaction'],
 			selected: 'product',
-			set: '',
 		}
 	},
 	watch: {
 		// cada vez que la pregunta cambie, esta función será ejecutada
 		question: function (newQuestion, oldQuestion) {
 			this.answer = 'Esperando que deje de escribir...'
+			this.debouncedGetAnswer()
+		},
+		selected: function (prueba) {
+			this.answer = 'Esperando respuesta...'
 			this.debouncedGetAnswer()
 		},
 	},
@@ -52,11 +47,11 @@ export default {
 		// Para aprender más sobre la función _.debounce (y su primo
 		// _.throttle), visite: https://lodash.com/docs#debounce
 		axios
-			// .get('http://127.0.0.1:8000/api/product')
 			.get('http://127.0.0.1:8000/api/' + this.selected)
 			.then((aux) => (this.response = aux.data.data))
 			.catch((error) => console.log(error))
 		this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
+		this.debouncedGetSelect = _.debounce(this.getselect, 500)
 	},
 	computed: {
 		link: function () {
@@ -69,17 +64,12 @@ export default {
 		},
 	},
 	methods: {
-		setSelect: function (select) {
-			this.set = select
-		},
 		getAnswer: function () {
-			this.answer = 'modelo es: ' + this.set
+			this.answer = 'modelo es: ' + this.selected
 			this.response = []
 			if (isEmpty(this.question))
 				axios
-					// .get(this.link)
-					// .get('http://127.0.0.1:8000/api/' + this.selected)
-					.get('http://127.0.0.1:8000/api/product/')
+					.get('http://127.0.0.1:8000/api/' + this.selected)
 					.then((rt) => (this.response = rt.data.data))
 					.catch(function (error) {
 						this.answer =
@@ -88,7 +78,6 @@ export default {
 			else
 				axios
 					.get(this.link)
-					// .get( 'http://127.0.0.1:8000/api/' + this.selected + '/' + this.question)
 					.then((rt) => this.response.push(rt.data.data))
 					.catch(function (error) {
 						this.answer =
