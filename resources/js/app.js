@@ -28,7 +28,11 @@ Vue.component(
 	'example-component',
 	require('./components/ExampleComponent.vue').default
 )
-Vue.component('table-componente', require('./components/table.vue').default)
+/* Vue.component('table-componente', require('./components/table.vue').default) */
+Vue.component(
+	'intermedio-component',
+	require('./components/intermedio.vue').default
+)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

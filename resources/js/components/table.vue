@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h2>Tabla de ejemplo</h2>
+		<h2>Tabla</h2>
 		<b-input-grupo size="lg">
 			<b-form-select
 				v-model="selected"
